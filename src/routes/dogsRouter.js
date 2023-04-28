@@ -2,6 +2,8 @@ const { Router } = require('express');
 const {getDogsHandler, getDogsHandlerById, getDogsHandlerByName, createDogsHandler} =require("../handlers/dogsHandlers"); 
 const dogsRouter = Router(); 
 
+
+
 const validate =(req, res, next)=>{ //midlew //sumo validacion con el back y front 
 const {name, weight, height, life_span} = req.body
     if(!name) return res.status (400).json ({Error : "Missing Name, please complete the data to continue "});

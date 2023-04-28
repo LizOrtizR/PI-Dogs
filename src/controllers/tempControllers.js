@@ -4,28 +4,15 @@ const {API_KEY}= process.env;
 
 
 
-// const getAllTemp = async () => {
-//     const databaseTemps = await Temperament.findAll(); 
-
-//  const apiTempsRaw= (
-//     await axios.get("https://api.thedogapi.com/v1/breeds")
-//     ).data
-
-    
-// const apiTemps = apiTempsRaw.map((breed)=>({temperament:breed.temperament}));
- 
-
-// return [...databaseTemps, ...apiTemps]; 
-// };
 const getAllTemp = async () => {
     try {
       // Obtenemos la información de la API
       const response = await axios.get("https://api.thedogapi.com/v1/breeds");
-      const breeds = response.data;
+      const dog = response.data;
   
       // Extraemos los temperamentos de la información obtenida de la API
-      const allTemperaments = breeds.flatMap((breed) =>
-        breed.temperament ? breed.temperament.split(", ") : []
+      const allTemperaments = dog.flatMap((dog) =>
+        dog.temperament ? dog.temperament.split(", ") : []
       );
   
       // Eliminamos los elementos duplicados y creamos un objeto con el nombre del temperamento

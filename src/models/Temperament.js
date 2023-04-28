@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('temperament', {
     
+   
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,4 +16,4 @@ module.exports = (sequelize) => {
       createdAt: 'creado',
       updatedAt: false
   });
-};
+}

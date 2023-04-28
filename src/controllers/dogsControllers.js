@@ -1,8 +1,5 @@
-const { Dog } = require('../db'); 
+const { Dog,Temperament } = require('../db'); 
 const axios = require("axios"); 
-
-
-
 
 const cleanArray = (arr)=>     //modularizando el mapeo
    arr.map((elem)=>{
@@ -19,10 +16,29 @@ const cleanArray = (arr)=>     //modularizando el mapeo
     });
 
 
-const createDog= async (name, weight, height, life_span, temperament, image)=>{  //manejo promesas
-
-  await Dog.create({name, weight, height, life_span, temperament, image})
-}
+    const capitalizar = (name) => {
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    };
+    
+    const createDog = async (name, weight, height, life_span, temperament, image) => {
+      const image1 = await (await axios.get("https://dog.ceo/api/breeds/image/random")).data.message;
+      const dogCreated = await Dog.findOrCreate({
+        where: {
+          name: capitalizar(name),
+          weight,
+          height,
+          life_span,
+          image: image || image1,
+        },
+      });
+      if (temperament) {
+        const temperaments = await Temperament.findAll({ where: { name: temperament } });
+        await dogCreated[0].setTemperaments(temperaments);
+      }
+      return dogCreated;
+      
+    };
+    
 
 
 const getDogById = async (idRaza, source)=>{
@@ -84,17 +100,7 @@ const apiDogs = apiDogsRaw.data.map((elem)=>({
 
 
 
-// const searchDogByName =async(name)=>{
-//     const dataBaseDogs =await Dog.findAll({where: { name: name }}); 
-//     const apiDogsRaw = (
-//         await axios.get("https://api.thedogapi.com/v1/breeds")).data;
-      
-        
-//     const apiDogs = cleanArray(apiDogsRaw); 
 
-//     const filteredApi =apiDogs.filter((dog)=> dog.name === name); 
-//     return [...filteredApi, ...dataBaseDogs];
-// };
 
 
  
